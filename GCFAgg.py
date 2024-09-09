@@ -150,7 +150,7 @@ if not os.path.isdir(modelFolderpath):
   os.makedirs(modelFolderpath, exist_ok = True)
 
 
-for e in tqdm(range(5)):
+for e in tqdm(range(200)):
   autoencoder_linear.train()
   for imgs in  multiviewImagelist:
     L_r = 0
@@ -274,7 +274,7 @@ if not os.path.isdir(modelFolderpath2):
 L_r = 0
 Z = []
 
-for e in tqdm(range(5)):
+for e in tqdm(range(100)):
   Z = []
   H_consensus.train()
   for imgs in  multiviewImagelist:
@@ -294,31 +294,7 @@ for e in tqdm(range(5)):
   # n_views -> number of views per image
   m = Z.shape[0] # total number of images
   vec_len = Z.shape[1] # vector length
-
-  # Wr = nn.Parameter(torch.randn(vec_len,vec_len))
-  # Wq1 = nn.Parameter(torch.randn(vec_len,vec_len))
-  # Wq2 = nn.Parameter(torch.randn(vec_len,vec_len))
-
-  # R = torch.matmul(Z,Wr)
-  # Q1 = torch.matmul(Z,Wq1)
-  # Q2 = torch.matmul(Z,Wq2)
-
-  # S = torch.nn.functional.softmax((torch.matmul(Q1,Q2.T)/torch.sqrt(torch.tensor(m))),dim=1)
-
-  # Z_cap = []
-  # for i in range(0,S.shape[0]):
-  #   Z_cap_temp = 0
-  #   S_i = S[i].tolist()
-  #   for j in range(0,Z.shape[0]):
-  #     S_j = torch.tensor(S_i[j]).reshape(1,1)
-  #     R_j = R[j].unsqueeze(0)
-
-  #     Z_cap_temp += torch.matmul(S_j,R_j)
-  #   Z_cap.append(Z_cap_temp)
-
-  # Z_cap = torch.stack(Z_cap)
-  # Z_cap = Z_cap.reshape(Z_cap.shape[0],Z_cap.shape[-1])
-
+    
   H_cap,S,Z = H_consensus(Z)
   L_c = getLc(1,vec_len,n_views,H_cap,S,Z)
 
